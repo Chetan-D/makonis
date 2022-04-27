@@ -1,0 +1,19 @@
+<div>
+    <form [formGroup]="formdata" (ngSubmit)="onClickSubmit(formdata.value)" class="form-group">
+        <input type="text" class="form-control" name="firstname" placeholder="firstname"
+               formControlName="firstname">
+        <br />
+
+        <input type="text" class="form-control" name="lastname"
+               placeholder="lastname" formControlName="lastname">
+        <br />
+
+        <input type="submit" [disabled] = "!formdata.valid" class="btn btn-primary" value="Submit">
+    </form>
+</div>
+<div #alert class="alert alert-success alert-dismissible fade" role="alert">
+    <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{responseData}}</strong> 
+</div>
