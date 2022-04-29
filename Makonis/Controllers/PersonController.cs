@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
-using System.Text.Json;
+using System.Collections.Generic;
 
 
 namespace Makonis.Controllers
@@ -25,10 +26,18 @@ namespace Makonis.Controllers
         {
             try
             {
-                string json = JsonSerializer.Serialize(person);
+               
                 var filename = $@"person.json";
-                string path = _host.ContentRootPath;
-                System.IO.File.AppendAllText(path + "\\wwwroot\\" + filename, json);                
+                string path = _host.ContentRootPath + "\\wwwroot\\" + filename;
+
+                var jsonData = System.IO.File.ReadAllText(path);
+                var personsList = JsonConvert.DeserializeObject<List<Person>>(jsonData)
+                      ?? new List<Person>();
+
+                personsList.Add(person);
+
+                jsonData = JsonConvert.SerializeObject(personsList);
+                System.IO.File.WriteAllText(path, jsonData);                      
 
                 return StatusCode(StatusCodes.Status200OK,"Inserted Successfully");
             }
